@@ -3421,8 +3421,9 @@ DECLARE_REFLECTION_ENUM(GLprimitiveMode);
 template <>
 rdcstr DoStringise(const GLprimitiveMode &el)
 {
-  RDCCOMPILE_ASSERT(sizeof(GLprimitiveMode) == sizeof(GLenum) && sizeof(GLprimitiveMode) == sizeof(uint32_t),
-                    "Fake bitfield enum must be uint32_t sized");
+  RDCCOMPILE_ASSERT(
+      sizeof(GLprimitiveMode) == sizeof(GLenum) && sizeof(GLprimitiveMode) == sizeof(uint32_t),
+      "Fake bitfield enum must be uint32_t sized");
 
   BEGIN_ENUM_STRINGISE(GLprimitiveMode);
   {
