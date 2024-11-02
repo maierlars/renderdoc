@@ -3409,10 +3409,34 @@ void WrappedOpenGL::glBindTransformFeedback(GLenum target, GLuint id)
   }
 }
 
+enum GLprimitiveMode
+{
+  points = eGL_POINTS,
+  lines = eGL_LINES,
+  triangles = eGL_TRIANGLES,
+};
+
+DECLARE_REFLECTION_ENUM(GLprimitiveMode);
+
+template <>
+rdcstr DoStringise(const GLprimitiveMode &el)
+{
+  RDCCOMPILE_ASSERT(sizeof(GLprimitiveMode) == sizeof(GLenum) && sizeof(GLprimitiveMode) == sizeof(uint32_t),
+                    "Fake bitfield enum must be uint32_t sized");
+
+  BEGIN_ENUM_STRINGISE(GLprimitiveMode);
+  {
+    STRINGISE_ENUM_NAMED(points, "GL_POINTS");
+    STRINGISE_ENUM_NAMED(lines, "GL_LINES");
+    STRINGISE_ENUM_NAMED(triangles, "GL_TRIANGLES");
+  }
+  END_ENUM_STRINGISE();
+}
+
 template <typename SerialiserType>
 bool WrappedOpenGL::Serialise_glBeginTransformFeedback(SerialiserType &ser, GLenum primitiveMode)
 {
-  SERIALISE_ELEMENT(primitiveMode);
+  SERIALISE_ELEMENT_TYPED(GLprimitiveMode, primitiveMode);
 
   SERIALISE_CHECK_READ_ERRORS();
 
